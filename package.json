@@ -1,0 +1,25 @@
+{
+  "name": "bf-interpreter",
+  "version": "1.0.0",
+  "description": "One more Brainfuck CLI interpreter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fabrv/bf-interpreter.git"
+  },
+  "keywords": [
+    "brainfuck",
+    "cli",
+    "interpreter",
+    "esolang"
+  ],
+  "author": "Fabrizzio Rivera",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fabrv/bf-interpreter/issues"
+  },
+  "homepage": "https://github.com/fabrv/bf-interpreter#readme"
+}
