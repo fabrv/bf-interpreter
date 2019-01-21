@@ -68,7 +68,7 @@ class Start{
             console.log(`Loop starts in ${i}: ${this.code[i]}`)
             let u = i
             let openLoops: number = 0
-            while(this.code[u] != ']' && openLoops == 0){
+            while(this.code[u] != ']' || openLoops == 0){
               u++
               if (this.code[u] == '['){openLoops++}
               if (this.code[u] == ']'){openLoops--}
@@ -84,10 +84,12 @@ class Start{
             console.log(`Loop closed in ${i}: ${this.code[i]}`)
             let u = i
             let openLoops: number = 0
-            while(this.code[u] != '[' && openLoops == 0){
+            while(this.code[u] != '[' || openLoops == 0){
+              if (this.code[u-1] == ']'){openLoops++}
+              if (this.code[u-1] == '['){openLoops--}
+              console.log(this.code[u-1] != '[' && openLoops == 0)
+              console.log(chalk.cyan(`${openLoops} ; ${this.code[u-1]}`))
               u--
-              if (this.code[u] == ']'){openLoops++}
-              if (this.code[u] == '['){openLoops--}
             }
             i = u
             console.log(`loop restarted in ${i}: ${this.code[i]}`)
