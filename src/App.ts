@@ -1,6 +1,7 @@
 const { version } = require('../package.json')
 import * as minimist from 'minimist'
 import Start from './cmds/Start'
+import chalk from 'chalk';
 class Brainfuck {
 
   args: minimist.ParsedArgs = minimist(process.argv.slice(2))
@@ -22,10 +23,13 @@ class Brainfuck {
         break
 
       case 'help':
-        console.log(`
-        fuckrun start <file>
-                
-        version ............... Get fuckrun version
+        console.log(chalk.cyan(`
+        fuckrun <command> <parameter(s)> <options>`))
+        console.log(`        
+        start <file> ............ Run Brainfuck file
+           --verbose............. Prints a memory and instruction log
+
+        version ................. Get fuckrun version
         help .................... Get help
         `)
 

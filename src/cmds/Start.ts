@@ -21,7 +21,7 @@ class Start{
       this.code = data
       this.run()
       console.log(chalk.cyan(this.output))
-      console.log(this.memory.toString())
+      console.log('MEMORY:', this.memory.toString())
     })
   }
 
