@@ -1,2 +1,2 @@
 # Brainfuck CLI Interpreter
-NodeJS Brainfuck interpreter from the console.
+NodeJS Brainfuck console interpreter
