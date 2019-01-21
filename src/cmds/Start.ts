@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 import * as fs from 'fs'
-import * as prompt from 'prompt-sync'
+var prompt = require('prompt-sync')()
 class Start{
   code: string
   memory: Array<number> = []
@@ -21,7 +21,7 @@ class Start{
       this.code = data
       this.run()
       console.log(chalk.cyan(this.output))
-      console.log(this.pointer)
+      console.log(this.memory.toString())
     })
   }
 
@@ -57,7 +57,8 @@ class Start{
           this.output += String.fromCharCode(this.memory[this.pointer])
           break
         case ',':
-          this.memory[this.pointer] = prompt('INPUT:')
+          let input: string = prompt('INPUT:')
+          this.memory[this.pointer] = input.charCodeAt(0)
           break
 
 
@@ -79,7 +80,6 @@ class Start{
           break
 
         case ']':
-          console.log(this.memory[this.pointer])
           if (this.memory[this.pointer]!=0){
             console.log(`Loop closed in ${i}: ${this.code[i]}`)
             let u = i
