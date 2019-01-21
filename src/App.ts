@@ -34,7 +34,7 @@ class Brainfuck {
         break
 
       case 'start':
-        let start = new Start(this.args._[1])
+        let start = new Start(this.args._[1], this.args.verbose)        
         break
       default:
         console.error(`"${cmd}" is not a valid command!`)

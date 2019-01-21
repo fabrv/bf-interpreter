@@ -8,7 +8,7 @@ class Start{
   output: string = ''
   loops: number = 0
   
-  constructor(file:string){
+  constructor(file:string, public verbose:boolean){
     for (let i = 0; i < 32; i++){
       this.memory.push(0)
     }
@@ -27,7 +27,9 @@ class Start{
 
   async run(){
     for (let i = 0; i < this.code.length; i++){
-      console.log(chalk.magenta(`${i}:${this.code[i]} | ${this.pointer}: ${this.memory[this.pointer]}`))
+      if (this.verbose){
+        console.log(chalk.magenta(`${i}:${this.code[i]} | ${this.pointer}: ${this.memory[this.pointer]}`))
+      }      
       switch (this.code[i]){
         case '<':
           if (this.pointer == 0){
@@ -65,7 +67,6 @@ class Start{
         // LOOPS
         case '[':
           if (this.memory[this.pointer] == 0){
-            console.log(`Loop starts in ${i}: ${this.code[i]}`)
             let u = i
             let openLoops: number = 0
             while(this.code[u] != ']' || openLoops == 0){
@@ -74,14 +75,11 @@ class Start{
               if (this.code[u] == ']'){openLoops--}
             }
             i = u
-
-            console.log(`Loop ends in ${i}`)
           }
           break
 
         case ']':
           if (this.memory[this.pointer]!=0){
-            console.log(`Loop closed in ${i}: ${this.code[i]}`)
             let u = i
             let openLoops: number = 0
             while(this.code[u] != '[' || openLoops == 0){
@@ -92,7 +90,6 @@ class Start{
               u--
             }
             i = u
-            console.log(`loop restarted in ${i}: ${this.code[i]}`)
           }
       }
     }
