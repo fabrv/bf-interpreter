@@ -62,6 +62,38 @@ class Start{
             rl.close();
           });
           break
+
+
+        // LOOPS
+        case '[':
+          if (this.memory[this.pointer] == 0){
+            console.log(`Loop starts in ${i}`)
+            let u = i
+            let openLoops: number = 0
+            while(this.code[u] != ']' && openLoops == 0){
+              u++
+              if (this.code[u] == '['){openLoops++}
+              if (this.code[u] == ']'){openLoops--}
+            }
+            i = u--
+
+            console.log(`Loop ends in ${i}`)
+          }
+          break
+
+        case ']':          
+          if (this.memory[this.pointer]!=0){
+            console.log(`Loop closed in ${i}`)
+            let u = i
+            let openLoops: number = 0
+            while(this.code[u] != '[' && openLoops == 0){
+              u--
+              if (this.code[u] == ']'){openLoops++}
+              if (this.code[u] == '['){openLoops--}
+            }
+            i = u--
+            console.log(`loop restarted in ${i}`)
+          }
       }
     }
   }
