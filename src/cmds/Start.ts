@@ -8,7 +8,7 @@ class Start{
   output: string = ''
   loops: number = 0
   
-  constructor(file:string, public verbose:boolean){
+  constructor(file:string, public verbose:boolean, public debug: boolean = false){
     for (let i = 0; i < 32; i++){
       this.memory.push(0)
     }
@@ -64,8 +64,16 @@ class Start{
           this.memory[this.pointer] = input.charCodeAt(0)
           break
         
-        case '/':
-          let brake: string = prompt('DEBUG BREAK')
+        case '*':
+          if (this.debug){
+            console.log('-----------BREAK--------------')
+            console.log(chalk.magenta(`${i}:${this.code[i]} | ${this.pointer}: ${this.memory[this.pointer]}`))
+            console.log(chalk.yellow(this.memory.toString()))
+            let brake: string = prompt('DEBUG BREAK')
+            if (brake == 'exit' || brake == 'e'){
+              return
+            }
+          }          
           break
 
 
@@ -73,11 +81,11 @@ class Start{
         case '[':
           if (this.memory[this.pointer] == 0){
             let u = i
-            let openLoops: number = 0
-            while(this.code[u] != ']' || openLoops == 0){
-              u++
+            let openLoops: number = 1
+            while(this.code[u] != ']' || openLoops > 0){
               if (this.code[u] == '['){openLoops++}
               if (this.code[u] == ']'){openLoops--}
+              u++
             }
             i = u
           }
@@ -86,14 +94,15 @@ class Start{
         case ']':
           if (this.memory[this.pointer]!=0){
             let u = i
-            let openLoops: number = 0
-            while(this.code[u] != '[' || openLoops == 0){
+            let openLoops: number = 1
+            while(this.code[u] != '[' || openLoops > 0){
               if (this.code[u-1] == ']'){openLoops++}
               if (this.code[u-1] == '['){openLoops--}
               u--
             }
             i = u
           }
+          break
       }
     }
   }

@@ -1,4 +1,4 @@
-[9*5 + 3 = 48]
+[9X5 + 3 = 48]
 >+++++++++
 [
 	<+++++
@@ -48,8 +48,8 @@ Mover el 9 a la celda 9
 >-	
 ]
 
-***CODIGO PARA ROTAR
-[9*5 + 3 = 48]
+CODIGO PARA ROTAR
+[9X5 + 3 = 48]
 <
 >+++++++++
 [
@@ -86,32 +86,29 @@ Iterar en la rotacion con e input del usuario
 		>
 	]<
 	Mover el ultimo elemento una a la derecha
-  /
 	[
 		>+
 		<-
 	]
 	>-
-  /
 	<<[<]+
 	Moverme al final del arreglo y uno más
 	[>]>
 	Rotar el ultimo elemento a la primer posicion
 	[
-    /
 		<<[<]>
-    /
-		+	
-    /
+		+
 		[>]>
-    /
 		-
+    *
 	]
 	Regresar el carrete al inicio
+  *
 	<<[<]<
+  *
 	Regresar el contador una celda antes del arreglo
 	[
 		>+
 		<-
-	]>
+	]>*
 ]
