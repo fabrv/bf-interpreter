@@ -1,10 +1,16 @@
 {
-  "name": "bf-interpreter",
+  "name": "fuckrun",
   "version": "1.0.0",
   "description": "One more Brainfuck CLI interpreter",
   "main": "index.js",
   "scripts": {
+    "start": "npm run build:live",
+    "build": "tsc && npm link",
+    "build:live": "nodemon --exec ts-node src/App.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "amigo": "bin/fuckrun"
   },
   "repository": {
     "type": "git",
@@ -23,12 +29,14 @@
   },
   "homepage": "https://github.com/fabrv/bf-interpreter#readme",
   "dependencies": {
-    "@types/chalk": "^2.2.0",
-    "@types/minimist": "^1.2.0",
-    "@types/node": "^10.12.18",
     "chalk": "^2.4.2",
     "minimist": "^1.2.0",
     "ts-node": "^7.0.1",
     "typescript": "^3.2.4"
+  },
+  "devDependencies": {
+    "@types/chalk": "^2.2.0",
+    "@types/minimist": "^1.2.0",
+    "@types/node": "^10.12.18"
   }
 }
