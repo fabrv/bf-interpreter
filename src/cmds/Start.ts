@@ -29,6 +29,7 @@ class Start{
     for (let i = 0; i < this.code.length; i++){
       if (this.verbose){
         console.log(chalk.magenta(`${i}:${this.code[i]} | ${this.pointer}: ${this.memory[this.pointer]}`))
+        console.log(chalk.yellow(this.memory.toString()))
       }      
       switch (this.code[i]){
         case '<':
@@ -62,6 +63,10 @@ class Start{
           let input: string = prompt('INPUT:')
           this.memory[this.pointer] = input.charCodeAt(0)
           break
+        
+        case '/':
+          let brake: string = prompt('DEBUG BREAK')
+          break
 
 
         // LOOPS
@@ -85,8 +90,6 @@ class Start{
             while(this.code[u] != '[' || openLoops == 0){
               if (this.code[u-1] == ']'){openLoops++}
               if (this.code[u-1] == '['){openLoops--}
-              console.log(this.code[u-1] != '[' && openLoops == 0)
-              console.log(chalk.cyan(`${openLoops} ; ${this.code[u-1]}`))
               u--
             }
             i = u
