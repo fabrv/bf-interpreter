@@ -30,7 +30,7 @@ class UnitTests {
             }
             i++;
         }
-        console.log('Input tested:', i, input);
+        console.log('Input tested:', input);
         const testMemory = new Start_1.default(testPath, false, false, input).memory.toString();
         const evalMemory = new Start_1.default(evalPath, false, false, input).memory.toString();
         if (testMemory == evalMemory) {
