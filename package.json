@@ -1,7 +1,7 @@
 {
-  "name": "fuckrun",
+  "name": "bfrun",
   "version": "1.0.0",
-  "description": "One more Brainfuck CLI interpreter",
+  "description": "One more Brainfuck CLI interpreter and derivative",
   "main": "index.js",
   "scripts": {
     "start": "npm run build:live",
@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "amigo": "bin/fuckrun"
+    "bfrun": "bin/bfrun"
   },
   "repository": {
     "type": "git",

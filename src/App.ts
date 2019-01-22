@@ -24,7 +24,7 @@ class Brainfuck {
 
       case 'help':
         console.log(chalk.cyan(`
-        fuckrun <command> <parameter(s)> <options>`))
+        bfrun <command> <parameter(s)> <options>`))
         console.log(`        
         start <file> ............. Run Brainfuck file
             --verbose............. Prints a memory and instruction log
