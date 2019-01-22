@@ -7,8 +7,9 @@ class Start{
   pointer: number = 0
   output: string = ''
   loops: number = 0
+  inputptr: number = 0
   
-  constructor(file:string, public verbose:boolean, public debug: boolean = false){
+  constructor(file:string, public verbose:boolean, public debug: boolean = false, public input: string = ''){
     for (let i = 0; i < 32; i++){
       this.memory.push(0)
     }
@@ -20,8 +21,6 @@ class Start{
       }
       this.code = data
       this.run()
-      console.log(chalk.cyan(this.output))
-      console.log('MEMORY:', this.memory.toString())
     })
   }
 
@@ -60,8 +59,13 @@ class Start{
           this.output += String.fromCharCode(this.memory[this.pointer])
           break
         case ',':
-          let input: string = prompt('INPUT:')
-          this.memory[this.pointer] = input.charCodeAt(0)
+          if (this.input != ''){
+            let input: string = prompt('INPUT:')
+            this.memory[this.pointer] = input.charCodeAt(0)
+          }else{
+            this.memory[this.pointer] = this.input.charCodeAt(this.inputptr)
+            this.inputptr++
+          }
           break
         
         case '*':
@@ -112,6 +116,8 @@ class Start{
           break
       }
     }
+
+    return {'memory': this.memory, 'output': this.output}
   }
 }
 export default Start
