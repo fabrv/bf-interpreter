@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const { version } = require('../package.json');
 const minimist = require("minimist");
 const Start_1 = require("./cmds/Start");
+const UnitTest_1 = require("./cmds/UnitTest");
 const chalk_1 = require("chalk");
 class Brainfuck {
     constructor() {
@@ -36,9 +37,16 @@ class Brainfuck {
                 break;
             case 'start':
                 let start = new Start_1.default(this.args._[1], this.args.verbose);
+                console.log(chalk_1.default.cyan(start.output));
+                console.log('MEMORY:', start.memory.toString());
                 break;
             case 'debug':
-                let star = new Start_1.default(this.args._[1], this.args.verbose, true);
+                let debug = new Start_1.default(this.args._[1], this.args.verbose, true);
+                console.log(chalk_1.default.cyan(debug.output));
+                console.log('MEMORY:', debug.memory.toString());
+                break;
+            case 'test':
+                let test = new UnitTest_1.default(this.args._[1], this.args._[2]);
                 break;
             default:
                 console.error(`"${cmd}" is not a valid command.`);

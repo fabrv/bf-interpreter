@@ -4,27 +4,27 @@ const chalk_1 = require("chalk");
 const fs = require("fs");
 var prompt = require('prompt-sync')();
 class Start {
-    constructor(file, verbose, debug = false) {
+    constructor(file, verbose, debug = false, input = '') {
         this.verbose = verbose;
         this.debug = debug;
+        this.input = input;
         this.memory = [];
         this.pointer = 0;
         this.output = '';
         this.loops = 0;
+        this.inputptr = 0;
         for (let i = 0; i < 32; i++) {
             this.memory.push(0);
         }
         const path = `${process.cwd()}\\${file}`;
         console.log(chalk_1.default.blue(`Running file ${path}`));
-        fs.readFile(path, 'utf8', (err, data) => {
-            if (err) {
-                console.error(chalk_1.default.red(`${path} could not be found.`));
-            }
-            this.code = data;
+        try {
+            this.code = fs.readFileSync(path, 'utf8');
             this.run();
-            console.log(chalk_1.default.cyan(this.output));
-            console.log('MEMORY:', this.memory.toString());
-        });
+        }
+        catch (error) {
+            console.error(chalk_1.default.red(`${path} could not be found.`));
+        }
     }
     run() {
         for (let i = 0; i < this.code.length; i++) {
@@ -61,8 +61,14 @@ class Start {
                     this.output += String.fromCharCode(this.memory[this.pointer]);
                     break;
                 case ',':
-                    let input = prompt('INPUT:');
-                    this.memory[this.pointer] = input.charCodeAt(0);
+                    if (this.input == '') {
+                        let input = prompt('INPUT:');
+                        this.memory[this.pointer] = input.charCodeAt(0);
+                    }
+                    else {
+                        this.memory[this.pointer] = this.input.charCodeAt(this.inputptr);
+                        this.inputptr++;
+                    }
                     break;
                 case '*':
                     if (this.debug) {
@@ -118,6 +124,7 @@ class Start {
                     break;
             }
         }
+        return { 'memory': this.memory, 'output': this.output };
     }
 }
 exports.default = Start;

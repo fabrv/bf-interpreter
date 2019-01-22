@@ -1,6 +1,7 @@
 const { version } = require('../package.json')
 import * as minimist from 'minimist'
 import Start from './cmds/Start'
+import UnitTest from './cmds/UnitTest'
 import chalk from 'chalk';
 class Brainfuck {
 
@@ -46,9 +47,12 @@ class Brainfuck {
         console.log('MEMORY:', start.memory.toString())
         break
       case 'debug':
-        let star = new Start(this.args._[1], this.args.verbose, true)
-        console.log(chalk.cyan(start.output))
-        console.log('MEMORY:', start.memory.toString())
+        let debug = new Start(this.args._[1], this.args.verbose, true)
+        console.log(chalk.cyan(debug.output))
+        console.log('MEMORY:', debug.memory.toString())
+        break
+      case 'test':
+        let test = new UnitTest(this.args._[1], this.args._[2])
         break
       default:
         console.error(`"${cmd}" is not a valid command.`)
