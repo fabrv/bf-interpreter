@@ -15,13 +15,13 @@ class Start{
     }
     const path = `${process.cwd()}\\${file}`
     console.log(chalk.blue(`Running file ${path}`))
-    fs.readFile(path, 'utf8', (err, data)=>{
-      if (err){
-        console.error(chalk.red(`${path} could not be found.`))
-      }
-      this.code = data
-      this.run()
-    })
+
+    try {
+      this.code = fs.readFileSync(path,'utf8');
+      this.run() 
+    } catch (error) {
+      console.error(chalk.red(`${path} could not be found.`))
+    }    
   }
 
   run(){
@@ -59,7 +59,7 @@ class Start{
           this.output += String.fromCharCode(this.memory[this.pointer])
           break
         case ',':
-          if (this.input != ''){
+          if (this.input == ''){
             let input: string = prompt('INPUT:')
             this.memory[this.pointer] = input.charCodeAt(0)
           }else{
