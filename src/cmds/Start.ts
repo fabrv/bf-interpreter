@@ -73,7 +73,7 @@ class Start{
             if (brake == 'exit' || brake == 'e'){
               return
             }
-          }          
+          }
           break
 
 
@@ -83,8 +83,8 @@ class Start{
             let u = i
             let openLoops: number = 1
             while(this.code[u] != ']' || openLoops > 0){
-              if (this.code[u] == '['){openLoops++}
-              if (this.code[u] == ']'){openLoops--}
+              if (this.code[u+1] == '['){openLoops++}
+              if (this.code[u+1] == ']'){openLoops--}
               u++
             }
             i = u
@@ -101,6 +101,13 @@ class Start{
               u--
             }
             i = u
+            this.loops ++
+            if (this.loops > 10000){
+              console.error(chalk.red(`Infite loop. Instruction ${i}:${this.code[i]}`))
+              return
+            }
+          }else{
+            this.loops = 0;
           }
           break
       }

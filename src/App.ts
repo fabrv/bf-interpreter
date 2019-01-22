@@ -26,11 +26,14 @@ class Brainfuck {
         console.log(chalk.cyan(`
         fuckrun <command> <parameter(s)> <options>`))
         console.log(`        
-        start <file> ............ Run Brainfuck file
-           --verbose............. Prints a memory and instruction log
+        start <file> ............. Run Brainfuck file
+            --verbose............. Prints a memory and instruction log
+        debug <file>.............. Pauses the program and gives information every *
+            --verbose............. Prints a memory and instruction log
 
-        version ................. Get fuckrun version
-        help .................... Get help
+
+        version .................. Get fuckrun version
+        help ..................... Get help
         `)
 
         process.exit()
@@ -40,8 +43,11 @@ class Brainfuck {
       case 'start':
         let start = new Start(this.args._[1], this.args.verbose)        
         break
+      case 'debug':
+        let star = new Start(this.args._[1], this.args.verbose, true)
+        break
       default:
-        console.error(`"${cmd}" is not a valid command!`)
+        console.error(`"${cmd}" is not a valid command.`)
         break
     }
   }
