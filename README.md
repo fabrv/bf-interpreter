@@ -3,4 +3,4 @@ NodeJS Brainfuck console interpreter
 
 ## Future features
 * Test suite
-* Brainfuck Flat Interpretation
+* Brainfuck Flat Interpretation (data oriented brainfuck)

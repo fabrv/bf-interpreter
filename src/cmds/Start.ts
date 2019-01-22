@@ -25,7 +25,7 @@ class Start{
     })
   }
 
-  async run(){
+  run(){
     for (let i = 0; i < this.code.length; i++){
       if (this.verbose){
         console.log(chalk.magenta(`${i}:${this.code[i]} | ${this.pointer}: ${this.memory[this.pointer]}`))
