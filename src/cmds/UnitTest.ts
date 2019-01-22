@@ -27,7 +27,7 @@ class UnitTests{
       }
       i++
     }
-    console.log('Input tested:',i, input)
+    console.log('Input tested:',input)
     const testMemory = new Start(testPath,false,false,input).memory.toString()
     const evalMemory = new Start(evalPath,false,false,input).memory.toString()
 
