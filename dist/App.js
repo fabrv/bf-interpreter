@@ -38,12 +38,10 @@ class Brainfuck {
             case 'start':
                 let start = new Start_1.default(this.args._[1], this.args.verbose);
                 console.log(chalk_1.default.cyan(start.output));
-                console.log('MEMORY:', start.memory.toString());
                 break;
             case 'debug':
                 let debug = new Start_1.default(this.args._[1], this.args.verbose, true);
                 console.log(chalk_1.default.cyan(debug.output));
-                console.log('MEMORY:', debug.memory.toString());
                 break;
             case 'test':
                 let test = new UnitTest_1.default(this.args._[1], this.args._[2]);
