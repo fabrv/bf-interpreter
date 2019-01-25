@@ -12,7 +12,7 @@ class Start{
   
   constructor(file:string, public verbose:boolean, public debug: boolean = false, public input: string = ''){
     this.expandMemory(32)
-    for (let i = 0; i < 10; i++){
+    for (let i = 0; i < 16; i++){
       this.memory[1].push(0)
     }
 
