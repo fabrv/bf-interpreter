@@ -19,7 +19,7 @@ class UnitTests{
   evalTest(testCode: string, testPath: string, evalPath: string){
     let input: string = ' ';
     let i = 0;
-    while (testCode[i] != '!'){
+    while (testCode[i] != '!' && i<testCode.length){
       if (i==0){input = ''}
       input += testCode[i]
       if (i == testCode.length - 1){

@@ -20,12 +20,21 @@ class Start{
     console.log(chalk.blue(`Running file ${path}`))
 
     try {
-      this.code = fs.readFileSync(path,'utf8');
+      this.code = fs.readFileSync(path,'utf8')
+      let i = 0
+      while (this.code[i] != '!' && i<this.code.length){
+        if (i==0){this.input = ''}
+        this.input += this.code[i]
+        if (i == this.code.length - 1){
+          this.input = ''
+        }
+        i++
+      }
       this.run()
-      console.log('REGISTERS:', this.memory[1].toString())
+      console.log('\nREGISTERS:', this.memory[1].toString())
       console.log('MEMORY:   ', this.memory[0].toString())
     } catch (error) {
-      console.error(chalk.red(`${path} could not be found.`))
+      console.error(chalk.red(`Error: ${path} could not be found.`))
     }    
   }
 
@@ -34,11 +43,11 @@ class Start{
       if (this.verbose){
         console.log(chalk.magenta(`${i}:${this.code[i]} | ${this.pointer}: ${this.memory[this.strip][this.pointer[this.strip]]}`))
         console.log(chalk.yellow(this.memory.toString()))
-      }      
+      }
       switch (this.code[i]){
         case '<':
           if (this.pointer[this.strip] == 0){
-            console.error(chalk.red(`Memory out of bounds. Instruction ${i}:${this.code[i]}`))
+            console.error(chalk.red(`Error: Memory out of bounds. Instruction ${i}:${this.code[i]}`))
             return
           }
           this.pointer[this.strip]--
@@ -46,7 +55,7 @@ class Start{
         case '>':
           if (this.pointer[this.strip] == this.memory[0].length - 1){            
             if (this.strip == 1){
-              console.error(chalk.red(`Register memory out of bounds. Instruction ${i}:${this.code[i]}`))
+              console.error(chalk.red(`Error: Register memory out of bounds. Instruction ${i}:${this.code[i]}`))
               return
             }else{
               this.expandMemory(this.memory[0].length)
@@ -59,12 +68,13 @@ class Start{
           break
         case '-':
           if (this.memory[this.strip][this.pointer[this.strip]] == 0){
-            console.error(chalk.red(`Negatives not allowed. Instruction ${i}:${this.code[i]}`))
+            console.error(chalk.red(`Error: Negatives not allowed. Instruction ${i}:${this.code[i]}`))
             return
           }
           this.memory[this.strip][this.pointer[this.strip]]--
           break
         case '.':
+          process.stdout.write(String.fromCharCode(this.memory[this.strip][this.pointer[this.strip]]))
           this.output += String.fromCharCode(this.memory[this.strip][this.pointer[this.strip]])
           break
         case ',':
@@ -72,8 +82,13 @@ class Start{
             let input: string = prompt('INPUT:')
             this.memory[this.strip][this.pointer[this.strip]] = input.charCodeAt(0)
           }else{
-            this.memory[this.strip][this.pointer[this.strip]] = this.input.charCodeAt(this.inputptr)
-            this.inputptr++
+            if(this.inputptr < this.input.length){
+              this.memory[this.strip][this.pointer[this.strip]] = this.input.charCodeAt(this.inputptr)
+              this.inputptr++
+            }else{
+              console.error(chalk.red(`Error: No input available. Instruction ${i}:${this.code[i]}`))
+              return
+            }
           }
           break
         
@@ -123,7 +138,7 @@ class Start{
             i = u
             this.loops ++
             if (this.loops > 10000){
-              console.error(chalk.red(`Infite loop. Instruction ${i}:${this.code[i]}`))
+              console.error(chalk.red(`Error: Infite loop. Instruction ${i}:${this.code[i]}`))
               return
             }
           }else{
