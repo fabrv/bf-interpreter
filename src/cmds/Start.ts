@@ -53,7 +53,7 @@ class Start{
           this.pointer[this.strip]--
           break
         case '>':
-          if (this.pointer[this.strip] == this.memory[0].length - 1){            
+          if (this.pointer[this.strip] == this.memory[this.strip].length - 1){
             if (this.strip == 1){
               console.error(chalk.red(`\nError: Register memory out of bounds. \nInstruction ${i}: ${this.code[i-1] || ''}${this.code[i]}${this.code[i+1] || ''}`))
               return
@@ -137,7 +137,7 @@ class Start{
             }
             i = u
             this.loops ++
-            if (this.loops > 10000){
+            if (this.loops > 1000000){
               console.error(chalk.red(`\nError: Infite loop. \nInstruction ${i}: ${this.code[i-1] || ''}${this.code[i]}${this.code[i+1] || ''}`))
               return
             }
