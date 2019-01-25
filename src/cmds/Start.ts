@@ -34,20 +34,20 @@ class Start{
       console.log('\nREGISTERS:', this.memory[1].toString())
       console.log('MEMORY:   ', this.memory[0].toString())
     } catch (error) {
-      console.error(chalk.red(`Error: ${path} could not be found.`))
+      console.error(chalk.red(`\nError: ${path} could not be found.`))
     }    
   }
 
   run(){
     for (let i = 0; i < this.code.length; i++){
       if (this.verbose){
-        console.log(chalk.magenta(`${i}:${this.code[i]} | ${this.pointer}: ${this.memory[this.strip][this.pointer[this.strip]]}`))
+        console.log(chalk.magenta(`${i}:${this.code[i-1] || ''}${this.code[i]}${this.code[i+1] || ''} | ${this.pointer}: ${this.memory[this.strip][this.pointer[this.strip]]}`))
         console.log(chalk.yellow(this.memory.toString()))
       }
       switch (this.code[i]){
         case '<':
           if (this.pointer[this.strip] == 0){
-            console.error(chalk.red(`Error: Memory out of bounds. Instruction ${i}:${this.code[i]}`))
+            console.error(chalk.red(`\nError: Memory out of bounds. \nInstruction ${i}: ${this.code[i-1] || ''}${this.code[i]}${this.code[i+1] || ''}`))
             return
           }
           this.pointer[this.strip]--
@@ -55,7 +55,7 @@ class Start{
         case '>':
           if (this.pointer[this.strip] == this.memory[0].length - 1){            
             if (this.strip == 1){
-              console.error(chalk.red(`Error: Register memory out of bounds. Instruction ${i}:${this.code[i]}`))
+              console.error(chalk.red(`\nError: Register memory out of bounds. \nInstruction ${i}: ${this.code[i-1] || ''}${this.code[i]}${this.code[i+1] || ''}`))
               return
             }else{
               this.expandMemory(this.memory[0].length)
@@ -68,7 +68,7 @@ class Start{
           break
         case '-':
           if (this.memory[this.strip][this.pointer[this.strip]] == 0){
-            console.error(chalk.red(`Error: Negatives not allowed. Instruction ${i}:${this.code[i]}`))
+            console.error(chalk.red(`\nError: Negatives not allowed. \nInstruction ${i}: ${this.code[i-1] || ''}${this.code[i]}${this.code[i+1] || ''}`))
             return
           }
           this.memory[this.strip][this.pointer[this.strip]]--
@@ -86,7 +86,7 @@ class Start{
               this.memory[this.strip][this.pointer[this.strip]] = this.input.charCodeAt(this.inputptr)
               this.inputptr++
             }else{
-              console.error(chalk.red(`Error: No input available. Instruction ${i}:${this.code[i]}`))
+              console.error(chalk.red(`\nError: No input available. \nInstruction ${i}: ${this.code[i-1] || ''}${this.code[i]}${this.code[i+1] || ''}`))
               return
             }
           }
@@ -95,7 +95,7 @@ class Start{
         case '*':
           if (this.debug){
             console.log('-----------BREAK--------------')
-            console.log(chalk.magenta(`${i}:${this.code[i]} | ${this.pointer}: ${this.memory[this.strip][this.pointer[this.strip]]}`))
+            console.log(chalk.magenta(`${i}:${this.code[i-1] || ''}${this.code[i]}${this.code[i+1] || ''} | ${this.pointer}: ${this.memory[this.strip][this.pointer[this.strip]]}`))
             console.log(chalk.yellow(this.memory.toString()))
             let brake: string = prompt('DEBUG BREAK')
             if (brake == 'exit' || brake == 'e'){
@@ -138,7 +138,7 @@ class Start{
             i = u
             this.loops ++
             if (this.loops > 10000){
-              console.error(chalk.red(`Error: Infite loop. Instruction ${i}:${this.code[i]}`))
+              console.error(chalk.red(`\nError: Infite loop. \nInstruction ${i}: ${this.code[i-1] || ''}${this.code[i]}${this.code[i+1] || ''}`))
               return
             }
           }else{
