@@ -1,6 +1,6 @@
 {
   "name": "bfrun",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "One more Brainfuck CLI interpreter and derivative",
   "main": "index.js",
   "scripts": {
