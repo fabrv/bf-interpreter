@@ -15,7 +15,7 @@ class Start {
         this.loops = 0;
         this.inputptr = 0;
         this.expandMemory(32);
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 16; i++) {
             this.memory[1].push(0);
         }
         const path = `${process.cwd()}\\${file}`;
