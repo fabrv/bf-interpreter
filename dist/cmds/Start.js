@@ -70,7 +70,7 @@ class Start {
                     break;
                 case '+':
                     if (this.memory[this.strip][this.pointer[this.strip]] == 255) {
-                        this.memory[this.strip][this.pointer[this.strip]] == 0;
+                        this.memory[this.strip][this.pointer[this.strip]] = 0;
                     }
                     else {
                         this.memory[this.strip][this.pointer[this.strip]]++;
@@ -78,7 +78,7 @@ class Start {
                     break;
                 case '-':
                     if (this.memory[this.strip][this.pointer[this.strip]] == 0) {
-                        this.memory[this.strip][this.pointer[this.strip]] == 255;
+                        this.memory[this.strip][this.pointer[this.strip]] = 255;
                     }
                     else {
                         this.memory[this.strip][this.pointer[this.strip]]--;
