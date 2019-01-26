@@ -34,11 +34,12 @@ class Start{
       console.log('\nREGISTERS:', this.memory[1].toString())
       console.log('MEMORY:   ', this.memory[0].toString())
     } catch (error) {
-      console.error(chalk.red(`\nError: ${path} could not be found.`))
+      console.error(chalk.red(`\nError: Unexpected error ${path} could not run. ${error}`))
     }    
   }
 
   run(){
+    let stdout: boolean = true
     for (let i = 0; i < this.code.length; i++){
       if (this.verbose){
         console.log(chalk.magenta(`${i}:${this.code[i-1] || ''}${this.code[i]}${this.code[i+1] || ''} | ${this.pointer}: ${this.memory[this.strip][this.pointer[this.strip]]}`))
@@ -143,6 +144,51 @@ class Start{
             }
           }else{
             this.loops = 0;
+          }
+          break
+
+
+        //I/O
+        case '#':
+          {
+            let filename: string = '';
+            let f: number = this.pointer[0];
+            while (this.memory[0][f] != 0 && f < this.memory[0].length){
+              filename += String.fromCharCode(this.memory[0][f])
+              f++
+            }
+            const path = `${process.cwd()}\\${filename}`
+            try {
+              this.input = `${fs.readFileSync(path, 'utf8')}\0`
+              this.inputptr = 0
+            } catch (error) {
+              console.error(chalk.red(`\n${error}. \nInstruction ${i}: ${this.code[i-1] || ''}${this.code[i]}${this.code[i+1] || ''}`))
+              return
+            }
+          }
+          break
+        case ':':
+          {
+            let filename: string = '';
+            let f: number = this.pointer[0];
+            while (this.memory[0][f] != 0 && f < this.memory[0].length){
+              filename += String.fromCharCode(this.memory[0][f])
+              f++
+            }
+            const path = `${process.cwd()}\\${filename}`
+            if (this.code[i+1]!=':'){
+              const stream = fs.createWriteStream(path, {flags:'a'})
+              const data = this.memory[0].slice(0, this.pointer[0]).concat(this.memory[0].slice(f, this.memory[0].length))
+              for (let i = 0; i < data.length; i++){
+                if (data[i]>0){
+                  stream.write(String.fromCharCode(data[i]))
+                }
+              }
+              stream.end()
+            }else{
+              fs.writeFileSync(path,'','utf8')
+              i++
+            }
           }
           break
       }
