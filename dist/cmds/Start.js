@@ -22,32 +22,44 @@ class Start {
         console.log(chalk_1.default.blue(`Running file ${path}`));
         try {
             this.code = fs.readFileSync(path, 'utf8');
+            let i = 0;
+            while (this.code[i] != '!' && i < this.code.length) {
+                if (i == 0) {
+                    this.input = '';
+                }
+                this.input += this.code[i];
+                if (i == this.code.length - 1) {
+                    this.input = '';
+                }
+                i++;
+            }
             this.run();
-            console.log('REGISTERS:', this.memory[1].toString());
+            console.log('\nREGISTERS:', this.memory[1].toString());
             console.log('MEMORY:   ', this.memory[0].toString());
         }
         catch (error) {
-            console.error(chalk_1.default.red(`${path} could not be found.`));
+            console.error(chalk_1.default.red(`\nError: Unexpected error ${path} could not run. ${error}`));
         }
     }
     run() {
+        let stdout = true;
         for (let i = 0; i < this.code.length; i++) {
             if (this.verbose) {
-                console.log(chalk_1.default.magenta(`${i}:${this.code[i]} | ${this.pointer}: ${this.memory[this.strip][this.pointer[this.strip]]}`));
+                console.log(chalk_1.default.magenta(`${i}:${this.code[i - 1] || ''}${this.code[i]}${this.code[i + 1] || ''} | ${this.pointer}: ${this.memory[this.strip][this.pointer[this.strip]]}`));
                 console.log(chalk_1.default.yellow(this.memory.toString()));
             }
             switch (this.code[i]) {
                 case '<':
                     if (this.pointer[this.strip] == 0) {
-                        console.error(chalk_1.default.red(`Memory out of bounds. Instruction ${i}:${this.code[i]}`));
+                        console.error(chalk_1.default.red(`\nError: Memory out of bounds. \nInstruction ${i}: ${this.code[i - 1] || ''}${this.code[i]}${this.code[i + 1] || ''}`));
                         return;
                     }
                     this.pointer[this.strip]--;
                     break;
                 case '>':
-                    if (this.pointer[this.strip] == this.memory[0].length - 1) {
+                    if (this.pointer[this.strip] == this.memory[this.strip].length - 1) {
                         if (this.strip == 1) {
-                            console.error(chalk_1.default.red(`Register memory out of bounds. Instruction ${i}:${this.code[i]}`));
+                            console.error(chalk_1.default.red(`\nError: Register memory out of bounds. \nInstruction ${i}: ${this.code[i - 1] || ''}${this.code[i]}${this.code[i + 1] || ''}`));
                             return;
                         }
                         else {
@@ -61,12 +73,13 @@ class Start {
                     break;
                 case '-':
                     if (this.memory[this.strip][this.pointer[this.strip]] == 0) {
-                        console.error(chalk_1.default.red(`Negatives not allowed. Instruction ${i}:${this.code[i]}`));
+                        console.error(chalk_1.default.red(`\nError: Negatives not allowed. \nInstruction ${i}: ${this.code[i - 1] || ''}${this.code[i]}${this.code[i + 1] || ''}`));
                         return;
                     }
                     this.memory[this.strip][this.pointer[this.strip]]--;
                     break;
                 case '.':
+                    process.stdout.write(String.fromCharCode(this.memory[this.strip][this.pointer[this.strip]]));
                     this.output += String.fromCharCode(this.memory[this.strip][this.pointer[this.strip]]);
                     break;
                 case ',':
@@ -75,14 +88,20 @@ class Start {
                         this.memory[this.strip][this.pointer[this.strip]] = input.charCodeAt(0);
                     }
                     else {
-                        this.memory[this.strip][this.pointer[this.strip]] = this.input.charCodeAt(this.inputptr);
-                        this.inputptr++;
+                        if (this.inputptr < this.input.length) {
+                            this.memory[this.strip][this.pointer[this.strip]] = this.input.charCodeAt(this.inputptr);
+                            this.inputptr++;
+                        }
+                        else {
+                            console.error(chalk_1.default.red(`\nError: No input available. \nInstruction ${i}: ${this.code[i - 1] || ''}${this.code[i]}${this.code[i + 1] || ''}`));
+                            return;
+                        }
                     }
                     break;
                 case '*':
                     if (this.debug) {
                         console.log('-----------BREAK--------------');
-                        console.log(chalk_1.default.magenta(`${i}:${this.code[i]} | ${this.pointer}: ${this.memory[this.strip][this.pointer[this.strip]]}`));
+                        console.log(chalk_1.default.magenta(`${i}:${this.code[i - 1] || ''}${this.code[i]}${this.code[i + 1] || ''} | ${this.pointer}: ${this.memory[this.strip][this.pointer[this.strip]]}`));
                         console.log(chalk_1.default.yellow(this.memory.toString()));
                         let brake = prompt('DEBUG BREAK');
                         if (brake == 'exit' || brake == 'e') {
@@ -130,13 +149,58 @@ class Start {
                         }
                         i = u;
                         this.loops++;
-                        if (this.loops > 10000) {
-                            console.error(chalk_1.default.red(`Infite loop. Instruction ${i}:${this.code[i]}`));
+                        if (this.loops > 1000000) {
+                            console.error(chalk_1.default.red(`\nError: Infite loop. \nInstruction ${i}: ${this.code[i - 1] || ''}${this.code[i]}${this.code[i + 1] || ''}`));
                             return;
                         }
                     }
                     else {
                         this.loops = 0;
+                    }
+                    break;
+                //I/O
+                case '#':
+                    {
+                        let filename = '';
+                        let f = this.pointer[0];
+                        while (this.memory[0][f] != 0 && f < this.memory[0].length) {
+                            filename += String.fromCharCode(this.memory[0][f]);
+                            f++;
+                        }
+                        const path = `${process.cwd()}\\${filename}`;
+                        try {
+                            this.input = `${fs.readFileSync(path, 'utf8')}\0`;
+                            this.inputptr = 0;
+                        }
+                        catch (error) {
+                            console.error(chalk_1.default.red(`\n${error}. \nInstruction ${i}: ${this.code[i - 1] || ''}${this.code[i]}${this.code[i + 1] || ''}`));
+                            return;
+                        }
+                    }
+                    break;
+                case ':':
+                    {
+                        let filename = '';
+                        let f = this.pointer[0];
+                        while (this.memory[0][f] != 0 && f < this.memory[0].length) {
+                            filename += String.fromCharCode(this.memory[0][f]);
+                            f++;
+                        }
+                        const path = `${process.cwd()}\\${filename}`;
+                        if (this.code[i + 1] != ':') {
+                            const stream = fs.createWriteStream(path, { flags: 'a' });
+                            const data = this.memory[0].slice(0, this.pointer[0]).concat(this.memory[0].slice(f, this.memory[0].length));
+                            for (let i = 0; i < data.length; i++) {
+                                if (data[i] > 0) {
+                                    stream.write(String.fromCharCode(data[i]));
+                                }
+                            }
+                            stream.end();
+                        }
+                        else {
+                            fs.writeFileSync(path, '', 'utf8');
+                            i++;
+                        }
                     }
                     break;
             }

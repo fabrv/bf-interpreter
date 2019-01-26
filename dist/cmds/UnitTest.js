@@ -20,7 +20,7 @@ class UnitTests {
     evalTest(testCode, testPath, evalPath) {
         let input = ' ';
         let i = 0;
-        while (testCode[i] != '!') {
+        while (testCode[i] != '!' && i < testCode.length) {
             if (i == 0) {
                 input = '';
             }

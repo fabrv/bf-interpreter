@@ -1,6 +1,6 @@
 {
   "name": "bfrun",
-  "version": "1.2.3",
+  "version": "1.3.0",
   "description": "One more Brainfuck CLI interpreter and derivative",
   "main": "index.js",
   "scripts": {
@@ -31,13 +31,13 @@
   "dependencies": {
     "chalk": "^2.4.2",
     "minimist": "^1.2.0",
-    "prompt-sync": "^4.1.6",
-    "ts-node": "^7.0.1",
-    "typescript": "^3.2.4"
+    "prompt-sync": "^4.1.6"    
   },
   "devDependencies": {
     "@types/chalk": "^2.2.0",
     "@types/minimist": "^1.2.0",
-    "@types/node": "^10.12.18"
+    "@types/node": "^10.12.18",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.2.4"
   }
 }
